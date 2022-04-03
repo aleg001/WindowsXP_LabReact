@@ -61,6 +61,7 @@ const App = () => {
   // Referencia para tiempo: https://stackoverflow.com/questions/55031097/how-do-i-start-a-timer-on-a-click
   var min = 0;
   var sec = 0;
+
   function tiempoPartida() {
     timer.innerHTML = min + " min " + sec + " sec";
     sec++;
@@ -193,6 +194,29 @@ const App = () => {
     //console.log("Si funcionaaa");
   };
 
+  // Se definen variables con audios a usar
+  var startGame = new Audio("./extra/song.mp3");
+  var Right = new Audio("./extra/right.mp3");
+  var Wrong = new Audio("./extra/wrong.mp3");
+
+  var Win = new Audio("./extra/win.mp3");
+
+  // Se llama cada sonido
+  const StartGame = () => {
+    startGame.play();
+  };
+  const WrongCard = () => {
+    Wrong.play();
+  };
+
+  const RightCard = () => {
+    Right.play();
+  };
+
+  const WinGame = () => {
+    Win.play();
+  };
+
   // Referencia: https://es.reactjs.org/docs/hooks-state.html
 
   // Declaracion de variables de estado
@@ -303,22 +327,26 @@ const App = () => {
         alert("¡Felicidades, sigue así!");
         movements();
         ScorePoints();
-        //console.log("Si funcionaaa");
+        console.log("¡Has obtenido un punto!");
+        RightCard();
       } else {
         alert("¡Intenta de nuevo!");
-        setTimeout(() => movements(), 100);
+        setTimeout(() => movements(), 5);
+        WrongCard();
         //console.log("Si funcionaaa");
       }
     }
 
     if (foundMatches == maxPoints()) {
       //(20 puntos) Por mostrar un mensaje de "juego completado" cuando el jugador gane el juego [COMPLETADO]
+      WinGame();
       alert("JUEGO COMPLETADO");
       //console.log("Si funcionaaa");
     }
   }, [firstCard, nextCard]);
 
   React.useEffect(() => {
+    StartGame();
     alert("Iniciando partida");
     tiempoPartida();
     shuffleDeck();
@@ -326,6 +354,7 @@ const App = () => {
 
   return (
     <div style={bgStyle}>
+      <audio src="./extra/song.mp3" autoPlay="autoplay" loop="loop"></audio>
       <button style={gitHub} onClick={githubLink}></button>
       <button style={resetButton} onClick={restartGame}></button>
 
